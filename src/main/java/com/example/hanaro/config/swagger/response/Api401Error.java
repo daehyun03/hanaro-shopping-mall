@@ -10,7 +10,7 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @ApiResponse(responseCode = "401", description = "인증 실패",
         content = @Content(mediaType = "application/json",
-                examples = @ExampleObject(value = "{\"errorCode\": \"E401001\", \"message\": \"비밀번호가 일치하지 않습니다.\"}")
+                examples = @ExampleObject(value = "{\"errorCode\": \"E401001\", \"message\": \"인증에 실패했습니다.\"}")
         )
 )
 public @interface Api401Error {
