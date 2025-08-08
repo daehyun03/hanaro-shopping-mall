@@ -1,0 +1,27 @@
+package com.example.hanaro.entity;
+
+import com.example.hanaro.enums.OrderStatus;
+import jakarta.persistence.*;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@Entity
+@Table(name = "orders")
+public class Order extends BaseEntity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    @Enumerated(EnumType.STRING)
+    private OrderStatus status; // 주문 상태 [PAYMENT_COMPLETED, PREPARING, SHIPPING, DELIVERED]
+
+    private int totalPrice;
+
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+    private List<OrderItem> orderItems = new ArrayList<>();
+}
