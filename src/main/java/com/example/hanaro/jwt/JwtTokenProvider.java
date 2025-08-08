@@ -1,5 +1,6 @@
 package com.example.hanaro.jwt;
 
+import com.example.hanaro.enums.UserRole;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
@@ -11,6 +12,7 @@ import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
 import java.time.ZonedDateTime;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 @Slf4j
@@ -24,11 +26,25 @@ public class JwtTokenProvider {
     public void init() {
         this.secretKey = Keys.hmacShaKeyFor(secretKeyString.getBytes(StandardCharsets.UTF_8));
     }
+    // accessToken 생성
+    public String generateAccessToken(String email, UserRole userRole) {
+        Map<String, Object> claims = new java.util.HashMap<>();
+        claims.put("email", email);
+        claims.put("role", userRole.name());
+        return generateToken(claims, 30);
+    }
+    // refreshToken 생성
+    public String generateRefreshToken(String email) {
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("email", email);
 
-    public String generateToken(Map<String, Object> valueMap, int minutes) {
+        return generateToken(claims, 60 * 24 * 7);
+    }
+    // 토큰 생성 메소드
+    private String generateToken(Map<String, Object> claims, int minutes) {
         return Jwts.builder()
                 .setHeader(Map.of("typ", "JWT"))
-                .setClaims(valueMap)
+                .setClaims(claims)
                 .setIssuedAt(Date.from(ZonedDateTime.now().toInstant()))
                 .setExpiration(Date.from(ZonedDateTime.now().plusMinutes(minutes).toInstant()))
                 .signWith(this.secretKey)

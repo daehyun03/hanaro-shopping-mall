@@ -2,6 +2,7 @@ package com.example.hanaro.controller;
 
 import com.example.hanaro.config.swagger.response.*;
 import com.example.hanaro.dto.ErrorResponse;
+import com.example.hanaro.dto.TokenResponseDto;
 import com.example.hanaro.dto.UserLoginRequestDto;
 import com.example.hanaro.dto.UserSignupRequestDto;
 import com.example.hanaro.service.UserService;
@@ -46,8 +47,8 @@ public class UserController {
     @Api404Error
     @Api500ErrorGroup
     @PostMapping("/login")
-    public ResponseEntity<String> login(@Valid @RequestBody UserLoginRequestDto requestDto) {
-        String token = userService.login(requestDto);
+    public ResponseEntity<TokenResponseDto> login(@Valid @RequestBody UserLoginRequestDto requestDto) {
+        TokenResponseDto token = userService.login(requestDto);
         return ResponseEntity.ok(token);
     }
 }
