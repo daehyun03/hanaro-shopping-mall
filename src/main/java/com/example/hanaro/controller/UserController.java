@@ -1,5 +1,6 @@
 package com.example.hanaro.controller;
 
+import com.example.hanaro.config.swagger.response.*;
 import com.example.hanaro.dto.ErrorResponse;
 import com.example.hanaro.dto.UserLoginRequestDto;
 import com.example.hanaro.dto.UserSignupRequestDto;
@@ -29,21 +30,10 @@ public class UserController {
     private final UserService userService;
 
     @Operation(summary = "회원가입", description = "사용자 정보를 받아 회원가입을 진행합니다.")
-    @ApiResponses({
-            @ApiResponse(responseCode = "201", description = "회원가입 성공"),
-            @ApiResponse(responseCode = "400", description = "입력값 유효성 검증 실패",
-                    content = @Content(mediaType = "application/json",
-                            examples = @ExampleObject(
-                                    name = "사용자 없음 에러",
-                                    value = "{\"errorCode\": \"E400001\", \"message\": \"입력값이 유효하지 않습니다.\"}"
-                            ))),
-            @ApiResponse(responseCode = "409", description = "이미 존재하는 이메일 또는 닉네임",
-                    content = @Content(mediaType = "application/json",
-                            examples = @ExampleObject(
-                                    name = "사용자 중복 에러",
-                                    value = "{\"errorCode\": \"E409001\", \"message\": \"이미 존재하는 이메일입니다.\"}"
-                            )))
-    })
+    @ApiResponse(responseCode = "201", description = "회원가입 성공")
+    @Api400Error
+    @Api409Error
+    @Api500ErrorGroup
     @PostMapping("/signup")
     public ResponseEntity<String> signup(@Valid @RequestBody UserSignupRequestDto requestDto) {
         userService.signup(requestDto);
@@ -51,27 +41,10 @@ public class UserController {
     }
 
     @Operation(summary = "로그인", description = "이메일과 비밀번호로 로그인을 진행하고 JWT를 발급합니다.")
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "로그인 성공 및 JWT 발급"),
-            @ApiResponse(responseCode = "400", description = "입력값 유효성 검증 실패",
-                content = @Content(mediaType = "application/json",
-                            examples = @ExampleObject(
-                                    name = "사용자 없음 에러",
-                                    value = "{\"errorCode\": \"E400001\", \"message\": \"입력값이 유효하지 않습니다.\"}"
-                            ))),
-            @ApiResponse(responseCode = "401", description = "인증 실패 (비밀번호 불일치)",
-                    content = @Content(mediaType = "application/json",
-                            examples = @ExampleObject(
-                                    name = "사용자 없음 에러",
-                                    value = "{\"errorCode\": \"E401001\", \"message\": \"비밀번호가 일치하지 않습니다.\"}"
-                            ))),
-            @ApiResponse(responseCode = "404", description = "가입되지 않은 이메일",
-                    content = @Content(mediaType = "application/json",
-                            examples = @ExampleObject(
-                                    name = "사용자 없음 에러",
-                                    value = "{\"errorCode\": \"E404001\", \"message\": \"가입되지 않은 이메일입니다.\"}"
-                            )))
-    })
+    @ApiResponse(responseCode = "200", description = "로그인 성공 및 JWT 발급")
+    @Api401Error
+    @Api404Error
+    @Api500ErrorGroup
     @PostMapping("/login")
     public ResponseEntity<String> login(@Valid @RequestBody UserLoginRequestDto requestDto) {
         String token = userService.login(requestDto);
