@@ -1,6 +1,6 @@
-package com.hanaro.repository;
+package com.example.hanaro.repository;
 
-import com.hanaro.entity.User;
+import com.example.hanaro.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

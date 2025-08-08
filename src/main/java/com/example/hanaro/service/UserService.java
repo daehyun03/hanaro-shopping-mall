@@ -1,11 +1,13 @@
-package com.hanaro.service;
+package com.example.hanaro.service;
 
-import com.hanaro.dto.UserLoginRequestDto;
-import com.hanaro.dto.UserSignupRequestDto;
-import com.hanaro.entity.User;
-import com.hanaro.enums.UserRole;
-import com.hanaro.jwt.JwtTokenProvider;
-import com.hanaro.repository.UserRepository;
+import com.example.hanaro.dto.UserLoginRequestDto;
+import com.example.hanaro.dto.UserSignupRequestDto;
+import com.example.hanaro.entity.User;
+import com.example.hanaro.enums.UserRole;
+import com.example.hanaro.exception.CustomException;
+import com.example.hanaro.exception.ErrorCode;
+import com.example.hanaro.jwt.JwtTokenProvider;
+import com.example.hanaro.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -24,7 +26,7 @@ public class UserService {
     @Transactional
     public void signup(UserSignupRequestDto requestDto) {
         if (userRepository.findByEmail(requestDto.email()).isPresent()) {
-            throw new IllegalArgumentException("이미 사용 중인 이메일입니다.");
+            throw new CustomException(ErrorCode.DUPLICATE_EMAIL);
         }
         String encodedPassword = passwordEncoder.encode(requestDto.password());
 
@@ -39,10 +41,10 @@ public class UserService {
 
     public String login(UserLoginRequestDto requestDto) {
         User user = userRepository.findByEmail(requestDto.email())
-                .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 이메일입니다."));
+                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
 
         if (!passwordEncoder.matches(requestDto.password(), user.getPassword())) {
-            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+            throw new CustomException(ErrorCode.INVALID_PASSWORD);
         }
 
         Map<String, Object> claims = new java.util.HashMap<>();
