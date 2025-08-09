@@ -12,12 +12,14 @@ import com.example.hanaro.jwt.JwtTokenProvider;
 import com.example.hanaro.repository.RefreshTokenRepository;
 import com.example.hanaro.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Log4j2
 public class UserService {
 
     private final UserRepository userRepository;
@@ -39,6 +41,7 @@ public class UserService {
                 .role(UserRole.ROLE_USER) // 기본 역할은 USER
                 .build();
         userRepository.save(user);
+        log.info("새로운 사용자 회원가입 완료: {}", requestDto.email());
     }
 
     public TokenResponseDto login(UserLoginRequestDto requestDto) {
@@ -59,6 +62,7 @@ public class UserService {
                         // 토큰이 없는 경우: 새로 만들어서 저장
                         () -> refreshTokenRepository.save(new RefreshToken(user, refreshTokenValue))
                 );
+        log.info("사용자 로그인 성공: {}", user.getEmail());
         return new TokenResponseDto(accessToken, refreshTokenValue);
     }
 }
