@@ -32,7 +32,7 @@ public class JwtTokenProvider {
         Map<String, Object> claims = new java.util.HashMap<>();
         claims.put("email", email);
         claims.put("role", List.of(userRole));
-        return generateToken(claims, 30);
+        return generateToken(claims, 60*24); //TODO 제출시 토큰 유효기간 변경필요
     }
     // refreshToken 생성
     public String generateRefreshToken(String email) {
