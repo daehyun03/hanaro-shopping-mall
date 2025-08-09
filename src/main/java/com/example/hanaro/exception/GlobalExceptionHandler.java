@@ -1,6 +1,7 @@
 package com.example.hanaro.exception;
 
 import com.example.hanaro.dto.ErrorResponse;
+import com.example.hanaro.enums.ErrorCode;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

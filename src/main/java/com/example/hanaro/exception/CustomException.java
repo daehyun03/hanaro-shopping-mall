@@ -1,5 +1,6 @@
 package com.example.hanaro.exception;
 
+import com.example.hanaro.enums.ErrorCode;
 import lombok.Getter;
 
 @Getter

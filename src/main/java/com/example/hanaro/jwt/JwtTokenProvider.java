@@ -13,6 +13,7 @@ import java.nio.charset.StandardCharsets;
 import java.time.ZonedDateTime;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Slf4j
@@ -30,7 +31,7 @@ public class JwtTokenProvider {
     public String generateAccessToken(String email, UserRole userRole) {
         Map<String, Object> claims = new java.util.HashMap<>();
         claims.put("email", email);
-        claims.put("role", userRole.name());
+        claims.put("role", List.of(userRole));
         return generateToken(claims, 30);
     }
     // refreshToken 생성

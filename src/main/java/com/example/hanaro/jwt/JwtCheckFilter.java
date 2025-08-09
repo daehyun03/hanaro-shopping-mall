@@ -28,10 +28,7 @@ public class JwtCheckFilter extends OncePerRequestFilter {
     @Override
     protected boolean shouldNotFilter(@NonNull HttpServletRequest request) {
         // Preflight 요청은 체크하지 않음
-        if (request.getMethod().equals("OPTIONS")) {
-            return true;
-        }
-        return false;
+        return request.getMethod().equals("OPTIONS");
     }
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request,
@@ -55,7 +52,7 @@ public class JwtCheckFilter extends OncePerRequestFilter {
 
             // claims에서 사용자 이메일과 권한 정보 추출
             String email = (String) claims.get("email"); // 토큰 생성 시 넣었던 key 값
-            List<String> roles = (List<String>) claims.get("role"); // 토큰 생성 시 넣었던 key 값
+            List<String> roles = (List<String>) claims.get("role"); // 토큰 생성 시 넣었던 key 값과 일치하도록 수정생성 시 넣었던 key 값
 
             // 추출한 권한 정보(String 리스트)를 Spring Security가 사용하는 GrantedAuthority 리스트로 변환
             List<SimpleGrantedAuthority> authorities = roles.stream()

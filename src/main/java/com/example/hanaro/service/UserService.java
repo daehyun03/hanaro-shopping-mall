@@ -7,7 +7,7 @@ import com.example.hanaro.entity.RefreshToken;
 import com.example.hanaro.entity.User;
 import com.example.hanaro.enums.UserRole;
 import com.example.hanaro.exception.CustomException;
-import com.example.hanaro.exception.ErrorCode;
+import com.example.hanaro.enums.ErrorCode;
 import com.example.hanaro.jwt.JwtTokenProvider;
 import com.example.hanaro.repository.RefreshTokenRepository;
 import com.example.hanaro.repository.UserRepository;
@@ -15,8 +15,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Map;
 
 @Service
 @RequiredArgsConstructor

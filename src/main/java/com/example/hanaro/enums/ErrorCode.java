@@ -1,4 +1,4 @@
-package com.example.hanaro.exception;
+package com.example.hanaro.enums;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,7 +11,8 @@ public enum ErrorCode {
     // 4xx CLIENT_ERROR
     INVALID_PARAMETER(HttpStatus.BAD_REQUEST, "E400001", "유효하지 않은 파라미터입니다."),
     INVALID_PASSWORD(HttpStatus.UNAUTHORIZED, "E401001", "비밀번호가 일치하지 않습니다."),
-    ACCESS_DENIED(HttpStatus.FORBIDDEN, "E403001", "접근 권한이 없습니다."),
+    UNAUTHORIZED_ACCESS(HttpStatus.UNAUTHORIZED, "E401002", "인증이 필요한 서비스입니다."),
+    FORBIDDEN_ACCESS(HttpStatus.FORBIDDEN, "E403001", "접근 권한이 없습니다."),
     USER_NOT_FOUND(HttpStatus.NOT_FOUND, "E404001", "가입되지 않은 이메일입니다."),
     DUPLICATE_EMAIL(HttpStatus.CONFLICT, "E409001", "이미 사용 중인 이메일입니다."),
 

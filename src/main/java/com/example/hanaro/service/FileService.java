@@ -2,12 +2,12 @@ package com.example.hanaro.service;
 
 import lombok.extern.slf4j.Slf4j;
 import net.coobird.thumbnailator.Thumbnails;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -19,8 +19,9 @@ public class FileService {
 
     private final String uploadDir;
 
-    public FileService() throws IOException {
-        this.uploadDir = new ClassPathResource("static/upload").getFile().getAbsolutePath();
+    public FileService() {
+        Path projectRootPath = Paths.get(System.getProperty("user.dir"));
+        this.uploadDir = projectRootPath.resolve(Paths.get("src", "main", "resources", "static", "upload")).toString();
     }
 
     public String storeFile(MultipartFile file) throws IOException {
@@ -33,6 +34,7 @@ public class FileService {
         if (!uploadPath.exists()) {
             uploadPath.mkdirs();
         }
+
         String uuid = UUID.randomUUID().toString();
         String originalFilename = file.getOriginalFilename();
         String extension = originalFilename.substring(originalFilename.lastIndexOf("."));
@@ -44,16 +46,16 @@ public class FileService {
         log.info("원본 파일이 저장되었습니다. 경로: {}", savedPath);
 
         // 썸네일 생성 및 저장
-        // 원본 파일 앞에 "s_"를 붙여 썸네일 파일명
         String thumbnailFilename = "s_" + savedFilename;
         String thumbnailPath = Paths.get(uploadPath.getPath(), thumbnailFilename).toString();
 
-        Thumbnails.of(new File(savedPath)) // 원본 파일
-                .size(100, 100)           // 가로 100px, 세로 100px로 크기 조절
-                .toFile(new File(thumbnailPath)); // 지정된 경로에 썸네일 파일로 저장
+        Thumbnails.of(new File(savedPath))
+                .size(100, 100)
+                .toFile(new File(thumbnailPath));
 
         log.info("썸네일 파일이 생성되었습니다. 경로: {}", thumbnailPath);
 
+        // DB에 저장하고, URL로 사용할 상대 경로 반환
         return "upload/" + datePath + "/" + savedFilename;
     }
 }

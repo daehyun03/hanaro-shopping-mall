@@ -24,7 +24,9 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-    private final JwtCheckFilter jwtCheckFilter; // DI를 통해 JWT 필터 주입
+    private final JwtCheckFilter jwtCheckFilter;
+    private final CustomAccessDeniedHandler customAccessDeniedHandler;
+    private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -49,7 +51,11 @@ public class SecurityConfig {
                         ).permitAll()
                         .anyRequest().authenticated()
                 );
-
+        http
+                .exceptionHandling(exceptions -> exceptions
+                        .authenticationEntryPoint(customAuthenticationEntryPoint)
+                        .accessDeniedHandler(customAccessDeniedHandler)
+                );
         http.addFilterBefore(jwtCheckFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
