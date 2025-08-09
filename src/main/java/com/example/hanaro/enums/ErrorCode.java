@@ -21,7 +21,8 @@ public enum ErrorCode {
     INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "E500001", "서버에 오류가 발생했습니다."),
     DATABASE_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "E500002", "데이터베이스에 오류가 발생했습니다."),
     FILE_UPLOAD_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "E500003", "파일 업로드 중 오류가 발생했습니다."),
-    BATCH_JOB_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "E500004", "배치 작업 처리 중 오류가 발생했습니다.");
+    BATCH_JOB_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "E500004", "배치 작업 처리 중 오류가 발생했습니다."),
+    CANNOT_DELETE_ADMIN(HttpStatus.INTERNAL_SERVER_ERROR, "E500005", "관리자는 삭제할 수 없습니다."),;
 
     private final HttpStatus status;
     private final String code;

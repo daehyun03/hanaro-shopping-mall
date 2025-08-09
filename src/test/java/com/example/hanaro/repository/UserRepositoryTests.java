@@ -31,8 +31,8 @@ public class UserRepositoryTests {
         }
         // 1. 관리자 계정 생성
         User admin = User.builder()
-                .email("admin@hanaro.com")
-                .password(passwordEncoder.encode("admin1234"))
+                .email("hanaro")
+                .password(passwordEncoder.encode("12345678"))
                 .nickname("관리자")
                 .role(UserRole.ROLE_ADMIN)
                 .build();

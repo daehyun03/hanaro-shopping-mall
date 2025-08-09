@@ -2,6 +2,7 @@ package com.example.hanaro.service;
 
 import com.example.hanaro.dto.TokenResponseDto;
 import com.example.hanaro.dto.UserLoginRequestDto;
+import com.example.hanaro.dto.UserResponseDto;
 import com.example.hanaro.dto.UserSignupRequestDto;
 import com.example.hanaro.entity.RefreshToken;
 import com.example.hanaro.entity.User;
@@ -17,9 +18,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @RequiredArgsConstructor
 @Log4j2
+@Transactional
 public class UserService {
 
     private final UserRepository userRepository;
@@ -27,7 +32,6 @@ public class UserService {
     private final JwtTokenProvider jwtTokenProvider;
     private final RefreshTokenRepository refreshTokenRepository;
 
-    @Transactional
     public void signup(UserSignupRequestDto requestDto) {
         if (userRepository.findByEmail(requestDto.email()).isPresent()) {
             throw new CustomException(ErrorCode.DUPLICATE_EMAIL);
@@ -41,7 +45,7 @@ public class UserService {
                 .role(UserRole.ROLE_USER) // 기본 역할은 USER
                 .build();
         userRepository.save(user);
-        log.info("새로운 사용자 회원가입 완료: {}", requestDto.email());
+        log.info("새로운 사용자 회원가입 완료: {}", user.getId());
     }
 
     public TokenResponseDto login(UserLoginRequestDto requestDto) {
@@ -64,5 +68,23 @@ public class UserService {
                 );
         log.info("사용자 로그인 성공: {}", user.getEmail());
         return new TokenResponseDto(accessToken, refreshTokenValue);
+    }
+    @Transactional(readOnly = true)
+    public List<UserResponseDto> getUserList() {
+        List<User> users = userRepository.findAll();
+
+        return users.stream()
+                .map(UserResponseDto::new)
+                .collect(Collectors.toList());
+    }
+
+    public void deleteUser(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
+        if (user.getRole() == UserRole.ROLE_ADMIN) {
+            throw new CustomException(ErrorCode.CANNOT_DELETE_ADMIN);
+        }
+        userRepository.delete(user);
+        log.info("사용자 삭제 완료: {}", user.getId());
     }
 }

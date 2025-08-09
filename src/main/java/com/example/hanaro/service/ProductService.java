@@ -8,6 +8,7 @@ import com.example.hanaro.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -17,6 +18,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 @Log4j2
+@Transactional
 public class ProductService {
 
     private final ProductRepository productRepository;
@@ -41,6 +43,7 @@ public class ProductService {
         }
         log.info("새로운 상품이 등록되었습니다. 상품명: {}, 가격: {}, 재고: {}", requestDto.name(), requestDto.price(), requestDto.stock());
     }
+
     public void updateProductStock(Long productId, ProductStockUpdateRequestDto requestDto) {
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new CustomException(ErrorCode.PRODUCT_NOT_FOUND));
@@ -48,6 +51,8 @@ public class ProductService {
         productRepository.save(product);
         log.info("상품 재고가 수정되었습니다. 상품 ID: {}, 새로운 재고: {}", productId, requestDto.stock());
     }
+
+    @Transactional(readOnly = true)
     public List<ProductResponseDto> getProducts(String keyword) {
         List<Product> products;
         if (keyword == null || keyword.isBlank()) {
@@ -61,6 +66,7 @@ public class ProductService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional(readOnly = true)
     public ProductDetailResponseDto getProductById(Long productId) {
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new CustomException(ErrorCode.PRODUCT_NOT_FOUND));
