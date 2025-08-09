@@ -38,7 +38,7 @@ public class UserController {
     @PostMapping("/signup")
     public ResponseEntity<String> signup(@Valid @RequestBody UserSignupRequestDto requestDto) {
         userService.signup(requestDto);
-        return ResponseEntity.status(HttpStatus.CREATED).body("회원가입이 성공적으로 완료되었습니다.");
+        return ResponseEntity.status(201).body("회원가입이 성공적으로 완료되었습니다.");
     }
 
     @Operation(summary = "로그인", description = "이메일과 비밀번호로 로그인을 진행하고 JWT를 발급합니다.")
@@ -49,6 +49,6 @@ public class UserController {
     @PostMapping("/login")
     public ResponseEntity<TokenResponseDto> login(@Valid @RequestBody UserLoginRequestDto requestDto) {
         TokenResponseDto token = userService.login(requestDto);
-        return ResponseEntity.ok(token);
+        return ResponseEntity.status(200).body(token);
     }
 }

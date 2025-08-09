@@ -38,7 +38,7 @@ public class ProductAdminController {
             @RequestPart("imageFile") MultipartFile imageFile) {
 
         productService.createProduct(requestDto, imageFile);
-        return ResponseEntity.status(HttpStatus.CREATED).body("상품이 성공적으로 등록되었습니다.");
+        return ResponseEntity.status(201).body("상품이 성공적으로 등록되었습니다.");
     }
     @Operation(summary = "상품 재고 수정", description = "특정 상품의 재고를 수정합니다. ADMIN 권한이 필요합니다.")
     @ApiResponse(responseCode = "200", description = "재고 수정 성공")
@@ -49,11 +49,24 @@ public class ProductAdminController {
     @Api500ErrorGroup
     @PreAuthorize("hasRole('ADMIN')")
     @PatchMapping("/{productId}/stock")
-    public ResponseEntity<Void> updateProductStock(
+    public ResponseEntity<String> updateProductStock(
             @PathVariable Long productId,
             @Valid @RequestBody ProductStockUpdateRequestDto requestDto) {
 
         productService.updateProductStock(productId, requestDto);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.status(200).body("상품 재고가 성공적으로 수정되었습니다.");
+    }
+    @Operation(summary = "상품 삭제", description = "특정 상품을 삭제합니다. ADMIN 권한이 필요합니다.")
+    @ApiResponse(responseCode = "204", description = "상품 삭제 성공")
+    @Api400Error
+    @Api401Error
+    @Api403Error
+    @Api404Error
+    @Api500ErrorGroup
+    @PreAuthorize("hasRole('ADMIN')")
+    @DeleteMapping("/{productId}")
+    public ResponseEntity<String> deleteProduct(@PathVariable Long productId) {
+        productService.deleteProduct(productId);
+        return ResponseEntity.status(204).body("상품이 성공적으로 삭제되었습니다.");
     }
 }
