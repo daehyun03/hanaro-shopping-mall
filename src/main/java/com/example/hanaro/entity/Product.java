@@ -30,4 +30,14 @@ public class Product extends BaseEntity {
     public void updateStock(Integer stock) {
         this.stock = stock;
     }
+
+    public void updateDetails(String name, int price, int stock, String imageUrl) {
+        this.name = name;
+        this.price = price;
+        this.stock = stock;
+        // 새로운 이미지 경로가 null이 아닐 경우에만 업데이트
+        if (imageUrl != null) {
+            this.imageUrl = imageUrl;
+        }
+    }
 }

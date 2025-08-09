@@ -36,9 +36,9 @@ public class UserController {
     @Api409Error
     @Api500ErrorGroup
     @PostMapping("/signup")
-    public ResponseEntity<String> signup(@Valid @RequestBody UserSignupRequestDto requestDto) {
+    public ResponseEntity<Void> signup(@Valid @RequestBody UserSignupRequestDto requestDto) {
         userService.signup(requestDto);
-        return ResponseEntity.status(201).body("회원가입이 성공적으로 완료되었습니다.");
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @Operation(summary = "로그인", description = "이메일과 비밀번호로 로그인을 진행하고 JWT를 발급합니다.")

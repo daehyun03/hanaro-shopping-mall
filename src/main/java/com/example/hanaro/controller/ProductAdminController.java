@@ -3,6 +3,7 @@ package com.example.hanaro.controller;
 import com.example.hanaro.config.swagger.response.*;
 import com.example.hanaro.dto.ProductCreateRequestDto;
 import com.example.hanaro.dto.ProductStockUpdateRequestDto;
+import com.example.hanaro.dto.ProductUpdateRequestDto;
 import com.example.hanaro.service.ProductService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -32,13 +33,13 @@ public class ProductAdminController {
     @Api500ErrorGroup
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<String> createProduct(
+    public ResponseEntity<Void> createProduct(
             @Valid
             @RequestPart("productInfo") ProductCreateRequestDto requestDto,
             @RequestPart("imageFile") MultipartFile imageFile) {
 
         productService.createProduct(requestDto, imageFile);
-        return ResponseEntity.status(201).body("상품이 성공적으로 등록되었습니다.");
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
     @Operation(summary = "상품 재고 수정", description = "특정 상품의 재고를 수정합니다. ADMIN 권한이 필요합니다.")
     @ApiResponse(responseCode = "200", description = "재고 수정 성공")
@@ -56,6 +57,7 @@ public class ProductAdminController {
         productService.updateProductStock(productId, requestDto);
         return ResponseEntity.status(200).body("상품 재고가 성공적으로 수정되었습니다.");
     }
+
     @Operation(summary = "상품 삭제", description = "특정 상품을 삭제합니다. ADMIN 권한이 필요합니다.")
     @ApiResponse(responseCode = "204", description = "상품 삭제 성공")
     @Api400Error
@@ -65,8 +67,25 @@ public class ProductAdminController {
     @Api500ErrorGroup
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{productId}")
-    public ResponseEntity<String> deleteProduct(@PathVariable Long productId) {
+    public ResponseEntity<Void> deleteProduct(@PathVariable Long productId) {
         productService.deleteProduct(productId);
-        return ResponseEntity.status(204).body("상품이 성공적으로 삭제되었습니다.");
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
+    @Operation(summary = "상품 정보 수정", description = "특정 상품의 정보를 수정합니다. ADMIN 권한이 필요합니다.")
+    @ApiResponse(responseCode = "200", description = "상품 정보 수정 성공")
+    @Api400Error
+    @Api401Error
+    @Api403Error
+    @Api500ErrorGroup
+    @PreAuthorize("hasRole('ADMIN')")
+    @PatchMapping(value = "/{productId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<String> updateProduct(
+            @PathVariable Long productId,
+            @Valid @RequestPart("productInfo") ProductUpdateRequestDto requestDto,
+            @RequestPart(value = "imageFile", required = false) MultipartFile imageFile) {
+
+        productService.updateProduct(productId, requestDto, imageFile);
+        return ResponseEntity.status(200).body("상품 정보를 수정했습니다.");
     }
 }
