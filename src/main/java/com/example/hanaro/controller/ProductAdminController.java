@@ -1,10 +1,8 @@
 package com.example.hanaro.controller;
 
-import com.example.hanaro.config.swagger.response.Api400Error;
-import com.example.hanaro.config.swagger.response.Api401Error;
-import com.example.hanaro.config.swagger.response.Api403Error;
-import com.example.hanaro.config.swagger.response.Api500ErrorGroup;
+import com.example.hanaro.config.swagger.response.*;
 import com.example.hanaro.dto.ProductCreateRequestDto;
+import com.example.hanaro.dto.ProductStockUpdateRequestDto;
 import com.example.hanaro.service.ProductService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -15,10 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 @Tag(name = "Admin - Product", description = "관리자 상품 관리 API")
@@ -44,5 +39,21 @@ public class ProductAdminController {
 
         productService.createProduct(requestDto, imageFile);
         return ResponseEntity.status(HttpStatus.CREATED).body("상품이 성공적으로 등록되었습니다.");
+    }
+    @Operation(summary = "상품 재고 수정", description = "특정 상품의 재고를 수정합니다. ADMIN 권한이 필요합니다.")
+    @ApiResponse(responseCode = "200", description = "재고 수정 성공")
+    @Api400Error
+    @Api401Error
+    @Api403Error
+    @Api404Error
+    @Api500ErrorGroup
+    @PreAuthorize("hasRole('ADMIN')")
+    @PatchMapping("/{productId}/stock")
+    public ResponseEntity<Void> updateProductStock(
+            @PathVariable Long productId,
+            @Valid @RequestBody ProductStockUpdateRequestDto requestDto) {
+
+        productService.updateProductStock(productId, requestDto);
+        return ResponseEntity.ok().build();
     }
 }

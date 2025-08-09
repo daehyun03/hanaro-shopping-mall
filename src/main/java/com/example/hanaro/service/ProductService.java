@@ -1,6 +1,7 @@
 package com.example.hanaro.service;
 
 import com.example.hanaro.dto.ProductCreateRequestDto;
+import com.example.hanaro.dto.ProductStockUpdateRequestDto;
 import com.example.hanaro.entity.Product;
 import com.example.hanaro.exception.CustomException;
 import com.example.hanaro.enums.ErrorCode;
@@ -37,5 +38,11 @@ public class ProductService {
             log.error("파일 저장 중 오류 발생", e);
             throw new CustomException(ErrorCode.FILE_UPLOAD_ERROR);
         }
+    }
+    public void updateProductStock(Long productId, ProductStockUpdateRequestDto requestDto) {
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new CustomException(ErrorCode.PRODUCT_NOT_FOUND));
+        product.updateStock(requestDto.stock());
+        productRepository.save(product);
     }
 }

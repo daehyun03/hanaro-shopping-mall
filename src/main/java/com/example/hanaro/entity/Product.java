@@ -26,4 +26,8 @@ public class Product extends BaseEntity {
     private Integer stock;
 
     private String imageUrl;
+
+    public void updateStock(Integer stock) {
+        this.stock = stock;
+    }
 }

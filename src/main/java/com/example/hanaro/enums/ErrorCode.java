@@ -14,6 +14,7 @@ public enum ErrorCode {
     UNAUTHORIZED_ACCESS(HttpStatus.UNAUTHORIZED, "E401002", "인증이 필요한 서비스입니다."),
     FORBIDDEN_ACCESS(HttpStatus.FORBIDDEN, "E403001", "접근 권한이 없습니다."),
     USER_NOT_FOUND(HttpStatus.NOT_FOUND, "E404001", "가입되지 않은 이메일입니다."),
+    PRODUCT_NOT_FOUND(HttpStatus.NOT_FOUND, "E404002", "존재하지 않는 상품입니다."),
     DUPLICATE_EMAIL(HttpStatus.CONFLICT, "E409001", "이미 사용 중인 이메일입니다."),
 
     // 5xx SERVER_ERROR
