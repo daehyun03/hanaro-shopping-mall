@@ -1,6 +1,8 @@
 package com.example.hanaro.service;
 
 import com.example.hanaro.dto.ProductCreateRequestDto;
+import com.example.hanaro.dto.ProductDetailResponseDto;
+import com.example.hanaro.dto.ProductResponseDto;
 import com.example.hanaro.dto.ProductStockUpdateRequestDto;
 import com.example.hanaro.entity.Product;
 import com.example.hanaro.exception.CustomException;
@@ -12,6 +14,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -44,5 +48,22 @@ public class ProductService {
                 .orElseThrow(() -> new CustomException(ErrorCode.PRODUCT_NOT_FOUND));
         product.updateStock(requestDto.stock());
         productRepository.save(product);
+    }
+    public List<ProductResponseDto> getProducts(String keyword) {
+        List<Product> products;
+        if (keyword == null || keyword.isBlank()) {
+            products = productRepository.findAll();
+        } else {
+            products = productRepository.findByNameContaining(keyword);
+        }
+        return products.stream()
+                .map(ProductResponseDto::new)
+                .collect(Collectors.toList());
+    }
+
+    public ProductDetailResponseDto getProductById(Long productId) {
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new CustomException(ErrorCode.PRODUCT_NOT_FOUND));
+        return new ProductDetailResponseDto(product);
     }
 }
