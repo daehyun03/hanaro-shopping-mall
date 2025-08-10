@@ -1,5 +1,6 @@
 package com.example.hanaro.jwt;
 
+import com.example.hanaro.service.CustomUserDetailsService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -9,21 +10,20 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Component
 @RequiredArgsConstructor
 public class JwtCheckFilter extends OncePerRequestFilter {
     private final JwtTokenProvider jwtTokenProvider;
+    private final CustomUserDetailsService customUserDetailsService;
 
     @Override
     protected boolean shouldNotFilter(@NonNull HttpServletRequest request) {
@@ -44,26 +44,16 @@ public class JwtCheckFilter extends OncePerRequestFilter {
         }
 
         try {
-            // "Bearer " 접두사를 제거하여 순수 토큰만 추출
             String token = authHeader.substring(7);
-
-            // validateToken을 호출하여 토큰 검증 및 claims 추출
             Map<String, Object> claims = jwtTokenProvider.validateToken(token);
+            String email = (String) claims.get("email");
 
-            // claims에서 사용자 이메일과 권한 정보 추출
-            String email = (String) claims.get("email"); // 토큰 생성 시 넣었던 key 값
-            List<String> roles = (List<String>) claims.get("role"); // 토큰 생성 시 넣었던 key 값과 일치하도록 수정생성 시 넣었던 key 값
+            UserDetails userDetails = customUserDetailsService.loadUserByUsername(email);
+            Authentication authentication = new UsernamePasswordAuthenticationToken(
+                    userDetails, null, userDetails.getAuthorities());
 
-            // 추출한 권한 정보(String 리스트)를 Spring Security가 사용하는 GrantedAuthority 리스트로 변환
-            List<SimpleGrantedAuthority> authorities = roles.stream()
-                    .map(SimpleGrantedAuthority::new)
-                    .collect(Collectors.toList());
-
-            //생성된 claims와 권한 정보를 바탕으로 인증 객체(Authentication) 생성
-            Authentication authentication = new UsernamePasswordAuthenticationToken(email, null, authorities);
-
-            //SecurityContext에 인증 정보 저장
             SecurityContextHolder.getContext().setAuthentication(authentication);
+
 
         } catch (Exception e) {
             // 토큰 검증 실패 시 (유효기간 만료, 서명 불일치 등)
