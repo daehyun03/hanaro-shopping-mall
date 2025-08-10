@@ -10,7 +10,7 @@ import com.example.hanaro.repository.CartRepository;
 import com.example.hanaro.repository.OrderRepository;
 import com.example.hanaro.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 @Transactional
-@Log4j2
+@Slf4j
 public class OrderService {
     private final UserRepository userRepository;
     private final CartRepository cartRepository;
@@ -76,6 +76,7 @@ public class OrderService {
         cart.getCartItems().clear();
         cartItemRepository.deleteAll(cartItems);
 
+        log.info("장바구니에서 주문이 생성되었습니다. 주문 ID: {}, 사용자: {}", newOrder.getId(), userEmail);
         return new OrderResponseDto(newOrder);
     }
 
@@ -90,13 +91,6 @@ public class OrderService {
     }
 
     @Transactional(readOnly = true)
-    public List<OrderResponseDto> getAllOrders() {
-        List<Order> orders = orderRepository.findAllByOrderByCreatedAtDesc();
-        return orders.stream()
-                .map(OrderResponseDto::new)
-                .collect(Collectors.toList());
-    }
-
     public List<OrderResponseDto> getAllOrders(String userEmail, OrderStatus orderStatus) {
         List<Order> orders = orderRepository.findOrdersByCriteria(userEmail, orderStatus);
         return orders.stream()
