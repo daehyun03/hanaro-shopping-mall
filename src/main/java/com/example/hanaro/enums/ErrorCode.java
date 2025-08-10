@@ -15,7 +15,9 @@ public enum ErrorCode {
     FORBIDDEN_ACCESS(HttpStatus.FORBIDDEN, "E403001", "접근 권한이 없습니다."),
     USER_NOT_FOUND(HttpStatus.NOT_FOUND, "E404001", "가입되지 않은 이메일입니다."),
     PRODUCT_NOT_FOUND(HttpStatus.NOT_FOUND, "E404002", "존재하지 않는 상품입니다."),
+    CART_ITEM_NOT_FOUND(HttpStatus.NOT_FOUND, "E404003", "장바구니에 해당 상품을 찾을 수 없습니다."),
     DUPLICATE_EMAIL(HttpStatus.CONFLICT, "E409001", "이미 사용 중인 이메일입니다."),
+    STOCK_NOT_ENOUGH(HttpStatus.CONFLICT, "E409002", "상품의 재고가 부족합니다."),
 
     // 5xx SERVER_ERROR
     INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "E500001", "서버에 오류가 발생했습니다."),
