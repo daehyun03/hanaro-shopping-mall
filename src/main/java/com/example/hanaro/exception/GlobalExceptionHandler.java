@@ -5,6 +5,7 @@ import com.example.hanaro.enums.ErrorCode;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -37,6 +38,13 @@ public class GlobalExceptionHandler {
         log.error("SQLException", e);
         ErrorResponse response = new ErrorResponse(ErrorCode.DATABASE_ERROR.getCode(), ErrorCode.DATABASE_ERROR.getMessage());
         return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+    @ExceptionHandler(AuthorizationDeniedException.class)
+    protected ResponseEntity<ErrorResponse> handleAuthorizationDeniedException(AuthorizationDeniedException e) {
+        log.error("AuthorizationDeniedException", e);
+        ErrorCode errorCode = ErrorCode.FORBIDDEN_ACCESS;
+        ErrorResponse response = new ErrorResponse(errorCode.getCode(), errorCode.getMessage());
+        return new ResponseEntity<>(response, errorCode.getStatus());
     }
     // 나머지 모든 예외 처리
     @ExceptionHandler(Exception.class)
