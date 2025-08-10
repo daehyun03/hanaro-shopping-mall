@@ -1,5 +1,7 @@
 package com.example.hanaro.entity;
 
+import com.example.hanaro.enums.ErrorCode;
+import com.example.hanaro.exception.CustomException;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -39,5 +41,12 @@ public class Product extends BaseEntity {
         if (imageUrl != null) {
             this.imageUrl = imageUrl;
         }
+    }
+
+    public void decreaseStock(int quantity) {
+        if (this.stock - quantity < 0) {
+            throw new CustomException(ErrorCode.STOCK_NOT_ENOUGH);
+        }
+        this.stock -= quantity;
     }
 }
