@@ -96,4 +96,11 @@ public class OrderService {
                 .map(OrderResponseDto::new)
                 .collect(Collectors.toList());
     }
+
+    public List<OrderResponseDto> getAllOrders(String userEmail, OrderStatus orderStatus) {
+        List<Order> orders = orderRepository.findOrdersByCriteria(userEmail, orderStatus);
+        return orders.stream()
+                .map(OrderResponseDto::new)
+                .collect(Collectors.toList());
+    }
 }

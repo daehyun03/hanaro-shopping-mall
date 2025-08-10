@@ -60,6 +60,11 @@ dependencies {
 
 }
 
+tasks.withType(JavaCompile) {
+    options.getGeneratedSourceOutputDirectory().set(file(layout.buildDirectory.dir("generated/sources/annotationProcessor/java/main")))
+}
+
+
 tasks.named('test') {
     useJUnitPlatform()
 }
