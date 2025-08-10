@@ -12,9 +12,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @Tag(name = "User - Order", description = "사용자 주문 API")
 @RestController
@@ -36,5 +39,17 @@ public class OrderController {
     public ResponseEntity<OrderResponseDto> createOrderFromCart(@AuthenticationPrincipal User user) {
         OrderResponseDto responseDto = orderService.createOrderFromCart(user.getUsername());
         return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
+    }
+
+    @Operation(summary = "내 주문 내역 조회", description = "현재 로그인된 사용자의 모든 주문 내역을 조회합니다.")
+    @ApiResponse(responseCode = "200", description = "주문 내역 조회 성공")
+    @Api401Error
+    @Api403Error
+    @Api500ErrorGroup
+    @PreAuthorize("hasRole('USER')")
+    @GetMapping("/my")
+    public ResponseEntity<List<OrderResponseDto>> getMyOrders(@AuthenticationPrincipal User user) {
+        List<OrderResponseDto> myOrders = orderService.getMyOrders(user.getUsername());
+        return ResponseEntity.ok(myOrders);
     }
 }

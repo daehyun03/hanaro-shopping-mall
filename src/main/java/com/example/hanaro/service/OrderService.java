@@ -9,10 +9,10 @@ import com.example.hanaro.repository.CartItemRepository;
 import com.example.hanaro.repository.CartRepository;
 import com.example.hanaro.repository.OrderRepository;
 import com.example.hanaro.repository.UserRepository;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -77,5 +77,15 @@ public class OrderService {
         cartItemRepository.deleteAll(cartItems);
 
         return new OrderResponseDto(newOrder);
+    }
+
+    @Transactional(readOnly = true)
+    public List<OrderResponseDto> getMyOrders(String userEmail) {
+        User user = userRepository.findByEmail(userEmail)
+                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
+        List<Order> orders = orderRepository.findAllByUserOrderByCreatedAtDesc(user);
+        return orders.stream()
+                .map(OrderResponseDto::new)
+                .collect(Collectors.toList());
     }
 }
