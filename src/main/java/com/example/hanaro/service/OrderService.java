@@ -88,4 +88,12 @@ public class OrderService {
                 .map(OrderResponseDto::new)
                 .collect(Collectors.toList());
     }
+
+    @Transactional(readOnly = true)
+    public List<OrderResponseDto> getAllOrders() {
+        List<Order> orders = orderRepository.findAllByOrderByCreatedAtDesc();
+        return orders.stream()
+                .map(OrderResponseDto::new)
+                .collect(Collectors.toList());
+    }
 }
