@@ -70,7 +70,7 @@ public class ProductService {
     public ProductDetailResponseDto getProductById(Long productId) {
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new CustomException(ErrorCode.PRODUCT_NOT_FOUND));
-        log.info("상품 상세 조회 완료. 상품 ID: {}", productId);
+        log.info("상품 상세 조회 완료. 상품 ID: {}, 상품명: {}", productId, product.getName());
         return new ProductDetailResponseDto(product);
     }
 
@@ -82,7 +82,7 @@ public class ProductService {
             fileService.deleteFile(product.getImageUrl());
         }
         productRepository.delete(product);
-        log.info("상품이 삭제되었습니다. 상품 ID: {}", productId);
+        log.info("상품이 삭제되었습니다. 상품 ID: {}, 상품명: {}", productId, product.getName());
     }
 
     public void updateProduct(Long productId, ProductUpdateRequestDto requestDto, MultipartFile imageFile) {
