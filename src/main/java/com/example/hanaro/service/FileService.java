@@ -69,21 +69,21 @@ public class FileService {
             String fullPath = new File(uploadDir, relativePath.replace("upload/", "")).getCanonicalPath();
             File originalFile = new File(fullPath);
 
-            // 썸네일 파일 경로
-            int lastSlashIndex = fullPath.lastIndexOf('/');
-            String path = fullPath.substring(0, lastSlashIndex + 1);
-            String filename = fullPath.substring(lastSlashIndex + 1);
-            File thumbnailFile = new File(path + "s_" + filename);
-
-            // 파일 삭제
             if (originalFile.exists()) {
+                File parentDir = originalFile.getParentFile();
+                String filename = originalFile.getName();
+                File thumbnailFile = new File(parentDir, "s_" + filename);
+
+                // 썸네일 파일 삭제
+                if (thumbnailFile.exists()) {
+                    if (thumbnailFile.delete()) {
+                        log.info("썸네일 파일 삭제 성공: {}", thumbnailFile.getPath());
+                    }
+                }
+
+                // 원본 파일 삭제
                 if (originalFile.delete()) {
                     log.info("원본 파일 삭제 성공: {}", fullPath);
-                }
-            }
-            if (thumbnailFile.exists()) {
-                if (thumbnailFile.delete()) {
-                    log.info("썸네일 파일 삭제 성공: {}", thumbnailFile.getPath());
                 }
             }
         } catch (IOException e) {
