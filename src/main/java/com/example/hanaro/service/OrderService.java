@@ -103,4 +103,33 @@ public class OrderService {
                 .map(OrderResponseDto::new)
                 .collect(Collectors.toList());
     }
+
+    public void cancelOrder(String userEmail, Long orderId) {
+        // 주문 정보와 사용자 정보 조회
+        User user = userRepository.findByEmail(userEmail)
+                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new CustomException(ErrorCode.ORDER_NOT_FOUND));
+
+        // 주문 소유권 확인: 내 주문이 맞는지 검증
+        if (!order.getUser().equals(user)) {
+            throw new CustomException(ErrorCode.FORBIDDEN_ACCESS);
+        }
+
+        // 주문 상태 확인: '결제 완료' 상태일 때만 취소 가능
+        if (order.getStatus() != OrderStatus.PAYMENT_COMPLETED) {
+            throw new CustomException(ErrorCode.ORDER_CANCEL_NOT_ALLOWED);
+        }
+
+        // 주문 상태를 'CANCELED'로 변경
+        order.updateStatus(OrderStatus.CANCELED);
+
+        // 주문 상품들의 재고를 다시 원래대로 복구
+        for (OrderItem orderItem : order.getOrderItems()) {
+            Product product = orderItem.getProduct();
+            product.increaseStock(orderItem.getQuantity());
+        }
+
+        log.info("주문이 취소되었습니다. 주문 ID={}, 유저 Email: {}", orderId, userEmail);
+    }
 }

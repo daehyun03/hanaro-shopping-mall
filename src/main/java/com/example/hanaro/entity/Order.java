@@ -24,7 +24,8 @@ public class Order extends BaseEntity {
     private User user;
 
     @Enumerated(EnumType.STRING)
-    private OrderStatus status; // 주문 상태 [PAYMENT_COMPLETED, PREPARING, SHIPPING, DELIVERED]
+    @Column(length = 20)
+    private OrderStatus status; // 주문 상태 [PAYMENT_COMPLETED, PREPARING, SHIPPING, DELIVERED, CANCELED]
 
     private int totalPrice;
 

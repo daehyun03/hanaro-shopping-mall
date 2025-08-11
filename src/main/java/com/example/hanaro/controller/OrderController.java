@@ -12,10 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -51,5 +48,22 @@ public class OrderController {
     public ResponseEntity<List<OrderResponseDto>> getMyOrders(@AuthenticationPrincipal User user) {
         List<OrderResponseDto> myOrders = orderService.getMyOrders(user.getUsername());
         return ResponseEntity.ok(myOrders);
+    }
+
+    @Operation(summary = "주문 취소", description = "'결제 완료' 상태의 주문을 취소합니다.")
+    @ApiResponse(responseCode = "200", description = "주문 취소 성공")
+    @Api400Error
+    @Api401Error
+    @Api403Error
+    @Api404Error
+    @Api500ErrorGroup
+    @PreAuthorize("hasRole('USER')")
+    @PatchMapping("/{orderId}/cancel")
+    public ResponseEntity<String> cancelOrder(
+            @AuthenticationPrincipal User user,
+            @PathVariable Long orderId) {
+
+        orderService.cancelOrder(user.getUsername(), orderId);
+        return ResponseEntity.ok().body("주문이 취소되었습니다.");
     }
 }
