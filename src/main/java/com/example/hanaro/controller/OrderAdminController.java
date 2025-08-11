@@ -2,6 +2,7 @@ package com.example.hanaro.controller;
 
 import com.example.hanaro.config.swagger.response.Api401Error;
 import com.example.hanaro.config.swagger.response.Api403Error;
+import com.example.hanaro.config.swagger.response.Api404Error;
 import com.example.hanaro.config.swagger.response.Api500ErrorGroup;
 import com.example.hanaro.dto.response.order.OrderResponseDto;
 import com.example.hanaro.enums.OrderStatus;
@@ -10,13 +11,11 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -42,5 +41,20 @@ public class OrderAdminController {
             @Parameter(description = "검색할 상품 아이디가 포함된 주문들을 조회합니다") @RequestParam(required = false) Long productId) {
         List<OrderResponseDto> orders = orderService.getAllOrders(userEmail, orderStatus, productId);
         return ResponseEntity.ok(orders);
+    }
+
+    @Operation(summary = "주문 상태 강제 변경", description = "특정 주문의 상태를 관리자가 직접 변경합니다.")
+    @ApiResponse(responseCode = "200", description = "주문 상태 변경 성공")
+    @Api401Error
+    @Api403Error
+    @Api404Error
+    @Api500ErrorGroup
+    @PatchMapping("/{orderId}/status")
+    public ResponseEntity<String> updateOrderStatus(
+            @PathVariable Long orderId,
+            @Parameter(description = "변경할 상태를 선택합니다.") @RequestParam(required = true) OrderStatus orderStatus) {
+
+        orderService.updateOrderStatus(orderId, orderStatus);
+        return ResponseEntity.ok().body("주문 ID" + orderId + "가 주문 상태가 " + orderStatus + "로 변경되었습니다.");
     }
 }

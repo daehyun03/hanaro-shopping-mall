@@ -132,4 +132,11 @@ public class OrderService {
 
         log.info("주문이 취소되었습니다. 주문 ID={}, 유저 Email: {}", orderId, userEmail);
     }
+
+    public void updateOrderStatus(Long orderId, OrderStatus newStatus) {
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new CustomException(ErrorCode.ORDER_NOT_FOUND));
+        order.updateStatus(newStatus);
+        log.info("관리자에 의해 주문 상태가 변경되었습니다. orderId={}, newStatus={}", orderId, newStatus);
+    }
 }
