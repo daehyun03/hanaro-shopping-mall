@@ -29,7 +29,7 @@ public class OrderRepositoryTests {
 
     @Test
     @Commit
-    @DisplayName("매출 통계용 주문 데이터 50개 생성")
+    @DisplayName("매출 통계용 주문 데이터 30개 생성")
     void createInitialOrders() {
         List<User> users = userRepository.findAll();
         users.removeIf(user -> user.getRole().equals(UserRole.ROLE_ADMIN));
@@ -37,7 +37,7 @@ public class OrderRepositoryTests {
         List<Product> products = productRepository.findAll();
 
         if (users.isEmpty() || products.isEmpty()) {
-            System.out.println("필요한 사용자 또는 상품 데이터가 DB에 없습니다. 사용자/상품 시딩을 먼저 실행해주세요.");
+            System.out.println("필요한 사용자 또는 상품 데이터가 DB에 없습니다.");
             return;
         }
 
