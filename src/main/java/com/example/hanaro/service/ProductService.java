@@ -112,6 +112,6 @@ public class ProductService {
             fileService.deleteFile(oldImagePath);
         }
         productRepository.save(product);
-        log.info("상품 정보가 업데이트되었습니다. 상품 ID: {}", productId);
+        log.info("상품 정보가 업데이트되었습니다. 상품 ID: {}, 상품명: {}, 가격: {}, 재고: {}", productId, requestDto.name(), requestDto.price(), requestDto.stock());
     }
 }
