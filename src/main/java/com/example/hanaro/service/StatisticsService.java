@@ -1,12 +1,11 @@
 package com.example.hanaro.service;
 
-import com.example.hanaro.dto.DailyStatsResponseDto;
-import com.example.hanaro.dto.ProductStatsResponseDto;
+import com.example.hanaro.dto.response.DailyStatsResponseDto;
+import com.example.hanaro.dto.response.product.ProductStatsResponseDto;
 import com.example.hanaro.entity.DailySalesStats;
 import com.example.hanaro.entity.ProductSalesStats;
 import com.example.hanaro.repository.DailySalesStatsRepository;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

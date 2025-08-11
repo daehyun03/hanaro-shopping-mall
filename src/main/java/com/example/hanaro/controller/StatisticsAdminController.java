@@ -1,7 +1,7 @@
 package com.example.hanaro.controller;
 
-import com.example.hanaro.dto.DailyStatsResponseDto;
-import com.example.hanaro.dto.ProductStatsResponseDto;
+import com.example.hanaro.dto.response.DailyStatsResponseDto;
+import com.example.hanaro.dto.response.product.ProductStatsResponseDto;
 import com.example.hanaro.service.StatisticsService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;

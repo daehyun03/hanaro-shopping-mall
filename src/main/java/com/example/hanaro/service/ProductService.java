@@ -1,9 +1,13 @@
 package com.example.hanaro.service;
 
-import com.example.hanaro.dto.*;
+import com.example.hanaro.dto.request.product.ProductCreateRequestDto;
+import com.example.hanaro.dto.request.product.ProductStockUpdateRequestDto;
+import com.example.hanaro.dto.request.product.ProductUpdateRequestDto;
+import com.example.hanaro.dto.response.product.ProductDetailResponseDto;
+import com.example.hanaro.dto.response.product.ProductResponseDto;
 import com.example.hanaro.entity.Product;
 import com.example.hanaro.exception.CustomException;
-import com.example.hanaro.enums.ErrorCode;
+import com.example.hanaro.exception.ErrorCode;
 import com.example.hanaro.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

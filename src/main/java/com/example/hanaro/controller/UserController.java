@@ -1,17 +1,12 @@
 package com.example.hanaro.controller;
 
 import com.example.hanaro.config.swagger.response.*;
-import com.example.hanaro.dto.ErrorResponse;
-import com.example.hanaro.dto.TokenResponseDto;
-import com.example.hanaro.dto.UserLoginRequestDto;
-import com.example.hanaro.dto.UserSignupRequestDto;
+import com.example.hanaro.dto.response.TokenResponseDto;
+import com.example.hanaro.dto.request.user.UserLoginRequestDto;
+import com.example.hanaro.dto.request.user.UserSignupRequestDto;
 import com.example.hanaro.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.ExampleObject;
-import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

@@ -1,4 +1,4 @@
-package com.example.hanaro.dto;
+package com.example.hanaro.dto.response.order;
 
 import com.example.hanaro.entity.Order;
 import com.example.hanaro.enums.OrderStatus;

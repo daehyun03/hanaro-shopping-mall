@@ -1,6 +1,6 @@
 package com.example.hanaro.entity;
 
-import com.example.hanaro.enums.ErrorCode;
+import com.example.hanaro.exception.ErrorCode;
 import com.example.hanaro.exception.CustomException;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

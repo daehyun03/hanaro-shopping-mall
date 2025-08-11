@@ -1,4 +1,4 @@
-package com.example.hanaro.dto;
+package com.example.hanaro.dto.request.cart;
 
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;

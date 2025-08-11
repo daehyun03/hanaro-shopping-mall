@@ -1,4 +1,4 @@
-package com.example.hanaro.enums;
+package com.example.hanaro.exception;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

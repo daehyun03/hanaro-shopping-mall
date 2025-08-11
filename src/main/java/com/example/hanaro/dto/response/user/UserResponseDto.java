@@ -1,4 +1,4 @@
-package com.example.hanaro.dto;
+package com.example.hanaro.dto.response.user;
 
 import com.example.hanaro.entity.User;
 import com.example.hanaro.enums.UserRole;

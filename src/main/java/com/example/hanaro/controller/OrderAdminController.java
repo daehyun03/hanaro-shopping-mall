@@ -3,7 +3,7 @@ package com.example.hanaro.controller;
 import com.example.hanaro.config.swagger.response.Api401Error;
 import com.example.hanaro.config.swagger.response.Api403Error;
 import com.example.hanaro.config.swagger.response.Api500ErrorGroup;
-import com.example.hanaro.dto.OrderResponseDto;
+import com.example.hanaro.dto.response.order.OrderResponseDto;
 import com.example.hanaro.enums.OrderStatus;
 import com.example.hanaro.service.OrderService;
 import io.swagger.v3.oas.annotations.Operation;

@@ -1,7 +1,7 @@
 package com.example.hanaro.controller;
 
 import com.example.hanaro.config.swagger.response.*;
-import com.example.hanaro.dto.OrderResponseDto;
+import com.example.hanaro.dto.response.order.OrderResponseDto;
 import org.springframework.security.core.userdetails.User;
 import com.example.hanaro.service.OrderService;
 import io.swagger.v3.oas.annotations.Operation;

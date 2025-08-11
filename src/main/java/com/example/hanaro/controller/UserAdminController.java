@@ -4,7 +4,7 @@ import com.example.hanaro.config.swagger.response.Api401Error;
 import com.example.hanaro.config.swagger.response.Api403Error;
 import com.example.hanaro.config.swagger.response.Api404Error;
 import com.example.hanaro.config.swagger.response.Api500ErrorGroup;
-import com.example.hanaro.dto.UserResponseDto;
+import com.example.hanaro.dto.response.user.UserResponseDto;
 import com.example.hanaro.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;

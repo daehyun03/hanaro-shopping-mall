@@ -1,4 +1,4 @@
-package com.example.hanaro.dto;
+package com.example.hanaro.dto.response;
 
 /**
  * API 에러 발생 시, 클라이언트에게 반환할 공통 응답 DTO

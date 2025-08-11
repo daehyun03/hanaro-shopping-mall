@@ -1,9 +1,9 @@
 package com.example.hanaro.controller;
 
 import com.example.hanaro.config.swagger.response.*;
-import com.example.hanaro.dto.CartItemAddRequestDto;
-import com.example.hanaro.dto.CartItemUpdateRequestDto;
-import com.example.hanaro.dto.CartResponseDto;
+import com.example.hanaro.dto.request.cart.CartItemAddRequestDto;
+import com.example.hanaro.dto.request.cart.CartItemUpdateRequestDto;
+import com.example.hanaro.dto.response.cart.CartResponseDto;
 import com.example.hanaro.service.CartService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;

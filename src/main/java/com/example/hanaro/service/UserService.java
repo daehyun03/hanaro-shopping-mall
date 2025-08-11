@@ -1,14 +1,14 @@
 package com.example.hanaro.service;
 
-import com.example.hanaro.dto.TokenResponseDto;
-import com.example.hanaro.dto.UserLoginRequestDto;
-import com.example.hanaro.dto.UserResponseDto;
-import com.example.hanaro.dto.UserSignupRequestDto;
+import com.example.hanaro.dto.response.TokenResponseDto;
+import com.example.hanaro.dto.request.user.UserLoginRequestDto;
+import com.example.hanaro.dto.response.user.UserResponseDto;
+import com.example.hanaro.dto.request.user.UserSignupRequestDto;
 import com.example.hanaro.entity.RefreshToken;
 import com.example.hanaro.entity.User;
 import com.example.hanaro.enums.UserRole;
 import com.example.hanaro.exception.CustomException;
-import com.example.hanaro.enums.ErrorCode;
+import com.example.hanaro.exception.ErrorCode;
 import com.example.hanaro.jwt.JwtTokenProvider;
 import com.example.hanaro.repository.RefreshTokenRepository;
 import com.example.hanaro.repository.UserRepository;

@@ -1,4 +1,4 @@
-package com.example.hanaro.config;
+package com.example.hanaro.config.security;
 
 import com.example.hanaro.jwt.JwtCheckFilter;
 import lombok.RequiredArgsConstructor;

@@ -1,4 +1,4 @@
-package com.example.hanaro.dto;
+package com.example.hanaro.dto.response;
 
 import com.example.hanaro.entity.DailySalesStats;
 import lombok.Getter;

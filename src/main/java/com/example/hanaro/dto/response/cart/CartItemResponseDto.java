@@ -1,4 +1,4 @@
-package com.example.hanaro.dto;
+package com.example.hanaro.dto.response.cart;
 
 import com.example.hanaro.entity.CartItem;
 import lombok.Getter;

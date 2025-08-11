@@ -1,8 +1,8 @@
-package com.example.hanaro.config;
+package com.example.hanaro.config.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.example.hanaro.dto.ErrorResponse;
-import com.example.hanaro.enums.ErrorCode;
+import com.example.hanaro.dto.response.ErrorResponse;
+import com.example.hanaro.exception.ErrorCode;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
