@@ -29,17 +29,18 @@ public class OrderAdminController {
 
     private final OrderService orderService;
 
-    @Operation(summary = "전체 주문 내역 조회", description = "모든 사용자의 주문 내역을 최신순으로 조회합니다.")
+    @Operation(summary = "전체 주문 내역 조회", description = "모든 사용자의 주문 내역을 최신순으로 조회합니다. " +
+            "사용자 이메일, 주문 상태, 상품 아이디로 필터링할 수 있습니다.")
     @ApiResponse(responseCode = "200", description = "전체 주문 내역 조회 성공")
     @Api401Error
     @Api403Error
     @Api500ErrorGroup
     @GetMapping("/list")
     public ResponseEntity<List<OrderResponseDto>> getAllOrders(
-            @Parameter(description = "검색할 사용자 이메일") @RequestParam(required = false) String userEmail,
-            @Parameter(description = "검색할 주문 상태") @RequestParam(required = false) OrderStatus orderStatus) {
-
-        List<OrderResponseDto> orders = orderService.getAllOrders(userEmail, orderStatus);
+            @Parameter(description = "검색할 사용자 이메일이 주문한 주문들을 조회합니다.") @RequestParam(required = false) String userEmail,
+            @Parameter(description = "검색할 주문 상태인 주문들을 조회합니다.") @RequestParam(required = false) OrderStatus orderStatus,
+            @Parameter(description = "검색할 상품 아이디가 포함된 주문들을 조회합니다") @RequestParam(required = false) Long productId) {
+        List<OrderResponseDto> orders = orderService.getAllOrders(userEmail, orderStatus, productId);
         return ResponseEntity.ok(orders);
     }
 }

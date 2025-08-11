@@ -96,9 +96,9 @@ public class OrderService {
     }
 
     @Transactional(readOnly = true)
-    public List<OrderResponseDto> getAllOrders(String userEmail, OrderStatus orderStatus) {
-        List<Order> orders = orderRepository.findOrdersByCriteria(userEmail, orderStatus);
-        log.info("주문 조회 완료. 사용자: {}, 주문 상태: {}, 주문 개수: {}", userEmail, orderStatus, orders.size());
+    public List<OrderResponseDto> getAllOrders(String userEmail, OrderStatus orderStatus, Long productId) {
+        List<Order> orders = orderRepository.findOrdersByCriteria(userEmail, orderStatus, productId);
+        log.info("주문 조회 완료. 사용자: {}, 주문 상태: {}, 상품 아이디: {}, 주문 개수: {}", userEmail, orderStatus, productId, orders.size());
         return orders.stream()
                 .map(OrderResponseDto::new)
                 .collect(Collectors.toList());

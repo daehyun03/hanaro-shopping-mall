@@ -6,5 +6,5 @@ import com.example.hanaro.enums.OrderStatus;
 import java.util.List;
 
 public interface OrderRepositoryCustom {
-    List<Order> findOrdersByCriteria(String userEmail, OrderStatus orderStatus);
+    List<Order> findOrdersByCriteria(String userEmail, OrderStatus orderStatus, Long productId);
 }
