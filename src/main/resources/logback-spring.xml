@@ -31,6 +31,27 @@
         </encoder>
     </appender>
 
+    <appender name="BATCH_LOG" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOGS_PATH}/business_batch.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOGS_PATH}/business_batch-%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${LOGS_PATTERN}</pattern>
+        </encoder>
+    </appender>
+
+    <logger name="com.example.hanaro.batch" level="INFO" additivity="false">
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="BATCH_LOG"/>
+    </logger>
+
+    <logger name="com.example.hanaro.scheduler" level="INFO" additivity="false">
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="BATCH_LOG"/>
+    </logger>
+
     <logger name="com.example.hanaro.service.ProductService" level="INFO" additivity="false">
         <appender-ref ref="CONSOLE"/>
         <appender-ref ref="PRODUCT_LOG"/>
