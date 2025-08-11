@@ -3,20 +3,22 @@ package com.example.hanaro.scheduler;
 import com.example.hanaro.entity.Order;
 import com.example.hanaro.enums.OrderStatus;
 import com.example.hanaro.repository.OrderRepository;
+import com.example.hanaro.service.OrderService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-@Slf4j
 @Component
 @RequiredArgsConstructor
 public class OrderScheduler {
 
     private final OrderRepository orderRepository;
+    private static final Logger log = LoggerFactory.getLogger(OrderService.class);
 
     /**
      * 결제 완료 -> 배송 준비 (매 5분마다 실행)

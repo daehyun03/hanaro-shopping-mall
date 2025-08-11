@@ -76,7 +76,11 @@ public class OrderService {
         cart.getCartItems().clear();
         cartItemRepository.deleteAll(cartItems);
 
+        String stockChanges = newOrder.getOrderItems().stream()
+                .map(item -> String.format("productId=%d, 변경량=-%d", item.getProduct().getId(), item.getQuantity()))
+                .collect(Collectors.joining(", "));
         log.info("장바구니에서 주문이 생성되었습니다. 주문 ID: {}, 사용자: {}", newOrder.getId(), userEmail);
+        log.info("주문 생성으로 재고가 변경되었습니다. orderId={}, 변경내역=[{}]", newOrder.getId(), stockChanges);
         return new OrderResponseDto(newOrder);
     }
 
@@ -85,6 +89,7 @@ public class OrderService {
         User user = userRepository.findByEmail(userEmail)
                 .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
         List<Order> orders = orderRepository.findAllByUserOrderByCreatedAtDesc(user);
+        log.info("주문 조회 완료. 사용자: {}, 주문 개수: {}", userEmail, orders.size());
         return orders.stream()
                 .map(OrderResponseDto::new)
                 .collect(Collectors.toList());
@@ -93,6 +98,7 @@ public class OrderService {
     @Transactional(readOnly = true)
     public List<OrderResponseDto> getAllOrders(String userEmail, OrderStatus orderStatus) {
         List<Order> orders = orderRepository.findOrdersByCriteria(userEmail, orderStatus);
+        log.info("주문 조회 완료. 사용자: {}, 주문 상태: {}, 주문 개수: {}", userEmail, orderStatus, orders.size());
         return orders.stream()
                 .map(OrderResponseDto::new)
                 .collect(Collectors.toList());

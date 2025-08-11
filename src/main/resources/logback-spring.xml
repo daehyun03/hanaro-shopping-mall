@@ -13,7 +13,7 @@
     <appender name="PRODUCT_LOG" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>${LOGS_PATH}/business_product.log</file> <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
         <fileNamePattern>${LOGS_PATH}/business_product-%d{yyyy-MM-dd}.log</fileNamePattern>
-        <maxHistory>30</maxHistory>
+        <maxHistory>288</maxHistory>
     </rollingPolicy>
         <encoder>
             <pattern>${LOGS_PATTERN}</pattern>
@@ -24,7 +24,7 @@
         <file>${LOGS_PATH}/business_order.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <fileNamePattern>${LOGS_PATH}/business_order-%d{yyyy-MM-dd}.log</fileNamePattern>
-            <maxHistory>30</maxHistory>
+            <maxHistory>288</maxHistory>
         </rollingPolicy>
         <encoder>
             <pattern>${LOGS_PATTERN}</pattern>
