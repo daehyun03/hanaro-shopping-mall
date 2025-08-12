@@ -17,7 +17,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-@Tag(name = "Admin - Product", description = "관리자 상품 관리 API")
+@Tag(name = "Admin / Product", description = "관리자 상품 관리 API")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/admin/product")

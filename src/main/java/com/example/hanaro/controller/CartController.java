@@ -16,7 +16,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.*;
 
-@Tag(name = "User - Cart", description = "사용자 장바구니 API")
+@Tag(name = "User / Cart", description = "사용자 장바구니 API")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/cart")
